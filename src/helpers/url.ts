@@ -13,7 +13,7 @@ export function buildURL(url: string, params?: any): string {
   // params是一个对象
   Object.keys(params).forEach(key => {
     const val = params[key]
-    // console.log(val)
+    console.log(val)
     // 如果是空值
     if (val === null || typeof val === 'undefined') {
       return
