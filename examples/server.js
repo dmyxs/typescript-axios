@@ -78,6 +78,7 @@ function registerBaseRouter() {
   })
 }
 
+//错误路由
 function registerErrorRouter() {
   router.get('/error/get', function(req, res) {
     if (Math.random() > 0.5) {
