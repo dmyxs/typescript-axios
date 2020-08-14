@@ -16,9 +16,9 @@ export type Method =
   | 'patch'
   | 'PATCH'
 
-// 请求接口
+// 通用请求接口
 export interface AxiosRequestConfig {
-  url: string
+  url?: string
   method?: Method
   data?: any
   params?: any
@@ -37,4 +37,34 @@ export interface AxiosResponse {
   request: any
 }
 
+// 错误接口
+export interface AxiosError extends Error {
+  isAxiosError: boolean //
+  config: AxiosRequestConfig // 配置
+  code?: string | null
+  request?: any // 请求
+  response?: AxiosResponse // 响应
+}
+
+// promise接口
 export interface AxiosPromise extends Promise<AxiosResponse> {}
+
+// 混合对象接口，支持多个方法,
+export interface Axios {
+  request(config: AxiosRequestConfig): AxiosPromise
+  get(url: string, config?: AxiosRequestConfig): AxiosPromise
+  delete(url: string, config?: AxiosRequestConfig): AxiosPromise
+  head(url: string, config?: AxiosRequestConfig): AxiosPromise
+  options(url: string, config?: AxiosRequestConfig): AxiosPromise
+  post(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise
+  put(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise
+  patch(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise
+}
+
+// 实例函数接口
+export interface AxiosInstance extends Axios {
+  (config: AxiosRequestConfig): AxiosPromise
+
+  // 双参数实现
+  (url: string, config?: AxiosRequestConfig): AxiosPromise
+}

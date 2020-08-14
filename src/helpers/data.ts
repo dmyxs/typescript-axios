@@ -8,7 +8,7 @@ export function transformRequest(data: any): any {
   return data
 }
 
-// 对返回的数据处理：如果是JOSN字符串，就解析成对象
+// 对返回的数据处理：如果是JSON字符串，就解析成对象
 export function transformResponse(data: any): any {
   if (typeof data === 'string') {
     try {
