@@ -47,6 +47,8 @@ module.exports = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop`)
 })
 
+//配置路由
+//axios基本get请求
 function registerSimpleRouter() {
   router.get('/simple/get', function(req, res) {
     res.json({
@@ -55,6 +57,7 @@ function registerSimpleRouter() {
   })
 }
 
+//基本路由 get post buffer
 function registerBaseRouter() {
   router.get('/base/get', function(req, res) {
     res.json(req.query)

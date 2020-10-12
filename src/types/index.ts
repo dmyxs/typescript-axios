@@ -1,5 +1,6 @@
 // 类型定义文件
 
+// ts类型别名
 export type Method =
   | 'get'
   | 'GET'
@@ -23,7 +24,7 @@ export interface AxiosRequestConfig {
   data?: any
   params?: any
   headers?: any
-  responseType?: XMLHttpRequestResponseType
+  responseType?: XMLHttpRequestResponseType // xml原生类型对象
   timeout?: number
 }
 
@@ -37,6 +38,9 @@ export interface AxiosResponse {
   request: any
 }
 
+// promise接口: 使用ts的继承 + 泛型接口
+export interface AxiosPromise extends Promise<AxiosResponse> {}
+
 // 错误接口
 export interface AxiosError extends Error {
   isAxiosError: boolean //
@@ -45,9 +49,6 @@ export interface AxiosError extends Error {
   request?: any // 请求
   response?: AxiosResponse // 响应
 }
-
-// promise接口
-export interface AxiosPromise extends Promise<AxiosResponse> {}
 
 // 混合对象接口，支持多个方法,
 export interface Axios {

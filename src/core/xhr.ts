@@ -1,20 +1,21 @@
-// 发送请求
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
+// 定义xhr
 
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
 import { parseHeaders } from '../helpers/headers'
 import { createError } from '../helpers/error'
 
+// ts使用接口，返回接口
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
     const { data = null, url, method = 'get', headers, responseType, timeout } = config
 
     const request = new XMLHttpRequest()
-
+    // 如果自己设置了responseType，就用设置的
     if (responseType) {
       request.responseType = responseType
     }
 
-    // 如果timeout存在，就赋值，默认是0，如果配置了就以这个计算多久超时
+    // 请求超时设置：默认是0，如果己设置了timeout，就用设置的
     if (timeout) {
       request.timeout = timeout
     }
@@ -23,16 +24,17 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     request.onreadystatechange = function handleLoad() {
       if (request.readyState !== 4) return
-
       if (request.status === 0) {
         return
       }
 
-      const responseHeaders = parseHeaders(request.getAllResponseHeaders())
+      // parseHeaders将返回的字符串数据转成对象格式
+      const responseHeaders = parseHeaders(request.getAllResponseHeaders()) // 原生方法
+      // 数据的响应类型：如果传递了responseType，并且不等于text（字符串），就返回对象格式
       const responseData =
         responseType && responseType !== 'text' ? request.response : request.responseText
 
-      // 设置响应体
+      // 构建返回的对象
       const response: AxiosResponse = {
         data: responseData,
         status: request.status,
@@ -54,13 +56,18 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       reject(createError(`Timeout of ${timeout} ms exceeded`, config, null, request))
     }
 
+    // 设置header
     Object.keys(headers).forEach(name => {
+      // 如果data为空，没有请求data，有content-type，就删除
       if (data === null && name.toLowerCase() === 'content-type') {
         delete headers[name]
       } else {
+        // 原生方法 设置请求头
         request.setRequestHeader(name, headers[name])
       }
     })
+
+    // 发送请求
     request.send(data)
 
     // 处理状态码错误

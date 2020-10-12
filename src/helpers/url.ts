@@ -1,6 +1,6 @@
 import { isDate, isPlainObject } from './util'
 
-// 处理url：可以传数组，对象，特殊字符，判断是null，
+// 创建生成url：可以传数组，对象，特殊字符，判断是null，
 export function buildURL(url: string, params?: any): string {
   // 如果没有传params，直接返回url
   if (!params) {
@@ -18,6 +18,7 @@ export function buildURL(url: string, params?: any): string {
     if (val === null || typeof val === 'undefined') {
       return
     }
+
     // 统一变成数组：因为val有可能是数组，也有可能不是，需要处理
     let values = []
     if (Array.isArray(val)) {
@@ -44,6 +45,7 @@ export function buildURL(url: string, params?: any): string {
   //   console.log(parts)
 
   // 拼接成字符串，数组内有两个值的才拼接，如果只有一个值，会只返回该值而不添加&
+  // www.dmyxs.com/user?name="li"&age=18#
   let seriqlizedParams = parts.join('&')
   //   console.log(seriqlizedParams)
 
@@ -53,14 +55,16 @@ export function buildURL(url: string, params?: any): string {
     if (marIndex !== -1) {
       url = url.slice(0, marIndex)
     }
-    // 添加？
+
+    // 处理？或 &
+    // 判断url是否已经出现？如果没有加？，有就加&号
     url += (url.indexOf('?') === -1 ? '?' : '&') + seriqlizedParams
   }
 
   return url
 }
 
-// 处理特殊字符
+// 处理特殊字符：替换掉一些字符
 function encode(val: string): string {
   return encodeURIComponent(val)
     .replace(/%40/g, '@')
