@@ -1,6 +1,7 @@
 // 处理请求头
 
-import { isPlainObject } from './util'
+import { deepMerge, isPlainObject } from './util'
+import { Method } from '../types/index'
 
 // 处理请求头：添加Content-Type
 // 依赖config中的header 和 data
@@ -47,11 +48,11 @@ export function parseHeaders(headers: string): any {
   if (!headers) {
     return parsed
   }
-  console.log(headers)
+  //   console.log(headers)
 
   // 使用回车符和换行符分割
   headers.split('\r\n').forEach(line => {
-    console.log(line)
+    // console.log(line)
 
     // 以：分割，解构
     let [key, val] = line.split(':')
@@ -69,4 +70,20 @@ export function parseHeaders(headers: string): any {
   })
 
   return parsed
+}
+
+export function flattenHeaders(headers: any, method: Method): any {
+  if (!headers) {
+    return headers
+  }
+
+  headers = deepMerge(headers.common, headers[method], headers)
+
+  const methodsToDelete = ['delete', 'get', 'head', 'options', 'post', 'put', 'patch', 'common']
+
+  methodsToDelete.forEach(method => {
+    delete headers[method]
+  })
+
+  return
 }

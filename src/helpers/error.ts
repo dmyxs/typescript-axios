@@ -16,6 +16,7 @@ export class AxiosError extends Error {
     request?: any,
     response?: AxiosResponse
   ) {
+    // 继承父类message
     super(message)
     this.config = config
     this.code = code
@@ -23,12 +24,12 @@ export class AxiosError extends Error {
     this.response = response
     this.isAxiosError = true
 
-    // 解决TS的坑
+    // 解决TS的坑：继承内置对象时会出现问题
     Object.setPrototypeOf(this, AxiosError.prototype)
   }
 }
 
-// 工厂函数
+// 工厂函数：过渡函数，直接导出，不用在外面定义了
 export function createError(
   message: string,
   config: AxiosRequestConfig,

@@ -1,5 +1,6 @@
 import axios, { AxiosError } from '../../src/index'
 
+// 错误处理
 // 故意写错url
 axios({
   method: 'get',
@@ -11,6 +12,7 @@ axios({
   .catch(e => {
     console.log(e)
   })
+
 
 // 有一定几率错误
 axios({
@@ -38,6 +40,7 @@ setTimeout(() => {
     })
 }, 5000)
 
+
 // 配置超时：服务器是3秒返回
 axios({
   method: 'get',
@@ -47,6 +50,7 @@ axios({
   .then(res => {
     console.log(res)
   })
+  // e 要指定AxiosError错误，才可以拿到错误信息
   .catch((e: AxiosError) => {
     console.log(e.message)
     console.log(e.config)

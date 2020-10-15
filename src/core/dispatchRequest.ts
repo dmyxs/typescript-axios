@@ -4,7 +4,7 @@ import { AxiosRequestConfig, AxiosPromise } from '../types'
 import xhr from './xhr'
 import { buildURL } from '../helpers/url'
 import { transformRequest, transformResponse } from '../helpers/data'
-import { processHeader } from '../helpers/headers'
+import { processHeader, flattenHeaders } from '../helpers/headers'
 import { AxiosResponse } from '../types/index'
 
 // 派发请求，返回promise对象
@@ -23,10 +23,11 @@ function processConfig(config: AxiosRequestConfig): void {
   // 这里要先处理headers，不然data就转成JSON了
   config.headers = transformHeaders(config)
   config.data = transformRequestData(config)
+  config.headers = flattenHeaders(config.headers, config.method!)
 }
 
 // 处理请求url
-// ts断言 不为空：加！
+// ts类型断言 不为空：加！
 function transformURL(config: AxiosRequestConfig): string {
   const { url, params } = config
   return buildURL(url!, params)
